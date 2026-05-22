@@ -31,5 +31,6 @@ def list_merged_branches(protected: list[str]) -> list[str]:
     return [b for b in branches if b and b not in protected]
 
 
-def delete_branch(name: str) -> None:
-    subprocess.check_call(["git", "branch", "-d", name])
+def delete_branch(name: str, force: bool = False) -> None:
+    flag = "-D" if force else "-d"
+    subprocess.check_call(["git", "branch", flag, name])
