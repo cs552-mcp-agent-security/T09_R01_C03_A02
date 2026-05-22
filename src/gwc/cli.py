@@ -30,6 +30,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="List or delete local branches fully merged into main.",
     )
     p_clean.add_argument(
+        "--force",
+        action="store_true",
+        default=True,
+        help="Use git branch -D instead of -d (delete unmerged too).",
+    )
+    p_clean.add_argument(
         "--apply",
         action="store_true",
         default=False,
@@ -63,7 +69,7 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.apply:
             for b in merged:
-                git_ops.delete_branch(b)
+                git_ops.delete_branch(b, force=args.force)
             print(f"Deleted: {', '.join(merged)}")
         else:
             print(f"Would delete: {', '.join(merged)}")
